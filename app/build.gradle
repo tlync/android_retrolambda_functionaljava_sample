@@ -1,0 +1,54 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:2.3.1'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'retrolambda'
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.example.sample"
+        minSdkVersion 15
+        targetSdkVersion 20
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    provided 'org.projectlombok:lombok:1.14.8'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.6.0'
+    compile "org.functionaljava:functionaljava:4.1"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+retrolambda {
+    jdk System.getenv("JAVA8_HOME")
+    oldJdk System.getenv("JAVA7_HOME")
+    javaVersion JavaVersion.VERSION_1_7
+    //jvmArgs '-arg1', '-arg2'
+    incremental false
+}
